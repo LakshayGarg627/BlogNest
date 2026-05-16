@@ -1,0 +1,106 @@
+{% extends "blog/base.html" %}
+{% block content %}
+    <style>
+        .topic-header-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        .topic-icon-wrapper {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            z-index: 2;
+            position: relative;
+        }
+        .topic-glow {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 150px;
+            filter: blur(80px);
+            opacity: 0.3;
+            z-index: 1;
+        }
+        .article-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+        .article-card:hover {
+            border-color: rgba(124, 58, 237, 0.3);
+            background: rgba(255, 255, 255, 0.02);
+            transform: translateY(-2px);
+        }
+    </style>
+
+    <div class="topic-header-card">
+        <div class="topic-glow" style="background-color: {{ info.color }};"></div>
+        
+        <div class="topic-icon-wrapper shadow-lg">
+            {% if info.icon == 'fa-python' or info.icon == 'fa-js' %}
+                <i class="fa-brands {{ info.icon }}" style="color: {{ info.color }};"></i>
+            {% else %}
+                <i class="fa-solid {{ info.icon }}" style="color: {{ info.color }};"></i>
+            {% endif %}
+        </div>
+        
+        <h1 class="fw-bolder mb-2 position-relative" style="color: var(--text-heading); font-size: 2.5rem; z-index: 2;">
+            {{ info.title }} Community
+        </h1>
+        <p class="text-muted lead mx-auto position-relative" style="max-width: 500px; font-size: 1.1rem; z-index: 2;">
+            {{ info.desc }}
+        </p>
+    </div>
+
+    <div class="mb-4 d-flex align-items-center justify-content-between">
+        <h4 class="fw-bold mb-0" style="color: var(--text-heading);">Latest in {{ info.title }}</h4>
+        <span class="text-muted small">Showing recent discussions</span>
+    </div>
+
+    {% if posts %}
+        {% for post in posts %}
+            <article class="article-card d-flex gap-3">
+                <img src="{{ post.author.profile.image.url }}" class="rounded-circle mt-1" style="width: 50px; height: 50px; object-fit: cover; border: 2px solid rgba(255,255,255,0.1);">
+                <div class="w-100">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <a href="{% url 'user-posts' post.author.username %}" class="text-decoration-none fw-bold" style="color: var(--text-normal);">{{ post.author.username }}</a>
+                        <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+                    </div>
+                    <h5 class="fw-bolder mb-2">
+                        <a href="{% url 'post-detail' post.id %}" class="text-decoration-none" style="color: var(--text-heading);">{{ post.title }}</a>
+                    </h5>
+                    <p class="text-muted mb-0" style="font-size: 0.95rem;">
+                        {{ post.content|truncatewords:25 }}
+                    </p>
+                </div>
+            </article>
+        {% endfor %}
+    {% else %}
+        <div class="text-center py-5">
+            <i class="fa-regular fa-folder-open text-muted mb-3" style="font-size: 3rem;"></i>
+            <h5 class="text-muted">No posts found in this topic yet.</h5>
+            <a href="{% url 'post-create' %}" class="btn btn-outline-primary mt-3 rounded-pill">Be the first to post</a>
+        </div>
+    {% endif %}
+
+{% endblock content %}

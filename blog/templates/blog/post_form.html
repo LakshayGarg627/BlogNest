@@ -1,0 +1,46 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <style>
+        .form-control {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-normal);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            background-color: var(--input-bg);
+            border-color: var(--brand-purple);
+            box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25);
+            color: white;
+        }
+        form label {
+            margin-bottom: 0.5rem !important;
+            color: #d1d5db !important;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .asteriskField {
+            display: none !important;
+        }
+    </style>
+    <div class="content-section p-4" style="background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border-color); box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+        <form method="POST" action="">
+            {% csrf_token %}
+            <fieldset class="form-group mb-4">
+                <legend class="border-bottom border-secondary mb-4 pb-3" style="color: var(--text-heading); font-size: 1.75rem; font-weight: 800; letter-spacing: -0.5px;">
+                    <i class="fa-solid fa-pen-nib me-2" style="color: var(--brand-purple);"></i>Create New Post
+                </legend>
+                <div class="mb-3">
+                    {{ form|crispy }}
+                </div>
+            </fieldset>
+            <div class="form-group d-flex justify-content-end gap-3 mt-4">
+                <a href="{% url 'blog-home' %}" class="btn btn-outline-secondary px-4 py-2" style="border-radius: 50px; font-weight: 600;">Cancel</a>
+                <button class="btn btn-primary px-5 py-2" style="border-radius: 50px; font-weight: 600;" type="Submit">Publish Post <i class="fa-solid fa-paper-plane ms-2"></i></button>
+            </div>
+        </form> 
+    </div>
+{% endblock content %}

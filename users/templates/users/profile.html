@@ -1,0 +1,92 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <style>
+        .form-control, .form-control-file {
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-normal);
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            transition: all 0.3s ease;
+        }
+        .form-control:focus, .form-control-file:focus {
+            background-color: var(--input-bg);
+            border-color: var(--brand-purple);
+            box-shadow: 0 0 0 0.25rem rgba(124, 58, 237, 0.25);
+            color: white;
+        }
+        .form-control:disabled, .form-control[readonly] {
+            background-color: rgba(255, 255, 255, 0.05); /* or var(--card-bg) or a muted color */
+            color: #6b7280; /* muted text */
+            cursor: not-allowed;
+            border-color: rgba(255, 255, 255, 0.05);
+            opacity: 0.7;
+        }
+        form label {
+            margin-bottom: 0.5rem !important;
+            color: #d1d5db !important;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        .asteriskField {
+            display: none !important;
+        }
+        /* Hide the default django help text like the username constraint paragraph */
+        .form-text, .help-block {
+            display: none !important;
+        }
+        /* Ensure the file input doesn't overflow */
+        input[type="file"] {
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .account-img-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        .account-img-profile {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border: 4px solid var(--card-bg);
+            box-shadow: 0 0 0 2px var(--brand-purple);
+        }
+    </style>
+    <div class="content-section p-4 mb-4" style="background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border-color); box-shadow: 0 10px 40px rgba(0,0,0,0.2);">
+        <div class="d-flex align-items-center mb-4 pb-4 border-bottom border-secondary" style="border-color: rgba(255,255,255,0.1) !important;">
+            <div class="account-img-wrapper">
+                <img src="{{ user.profile.image.url }}" class="rounded-circle account-img-profile mb-0">
+            </div>
+            <div class="ms-4">
+                <h2 class="account-heading mb-1" style="color: var(--text-heading); font-size: 2rem; font-weight: 800; letter-spacing: -0.5px;">{{ user.username }}</h2>
+                <p class="text-muted mb-0 fw-medium" style="font-size: 1rem;"><i class="fa-solid fa-envelope me-2"></i>{{ user.email }}</p>
+                <div class="mt-2">
+                    <span class="badge bg-primary bg-opacity-25 text-primary border border-primary px-3 py-2 rounded-pill"><i class="fa-solid fa-user-check me-1"></i> Author</span>
+                </div>
+            </div>
+        </div>
+        <!-- # Enctype is used to save the image in background -->
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <fieldset class="form-group mb-4">
+                <legend class="mb-4 pb-2" style="color: var(--text-heading); font-size: 1.5rem; font-weight: 700; letter-spacing: -0.5px;">
+                    <i class="fa-solid fa-user-gear me-2" style="color: var(--brand-purple);"></i>Account Settings
+                </legend>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        {{ u_form|crispy }}
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        {{ p_form|crispy }}
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-group d-flex justify-content-end gap-3 mt-4">
+                <button class="btn btn-primary px-5 py-2" style="border-radius: 50px; font-weight: 600;" type="Submit">Save Changes <i class="fa-solid fa-floppy-disk ms-2"></i></button>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
