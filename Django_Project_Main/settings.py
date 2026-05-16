@@ -126,7 +126,7 @@ STATIC_URL = 'static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')  # Files kaha store hogi server par
 MEDIA_URL='/media/'  # File ka URL kya hoga (browser ke liye)
@@ -153,4 +153,4 @@ CLOUDINARY_STORAGE = {
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
-
+STATICFILES_STORAGE = "whitenoise.storage.CompressedStaticFilesStorage"
